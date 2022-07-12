@@ -13,6 +13,7 @@
 		C09B339B287D8239007E7A20 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C09B339A287D8239007E7A20 /* Assets.xcassets */; };
 		C09B339E287D8239007E7A20 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C09B339C287D8239007E7A20 /* LaunchScreen.storyboard */; };
 		C09B33A6287D87CC007E7A20 /* UniversalDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09B33A5287D87CC007E7A20 /* UniversalDiffableDataSource.swift */; };
+		C09B33A8287D9587007E7A20 /* SimpleHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09B33A7287D9587007E7A20 /* SimpleHeaderView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +25,7 @@
 		C09B339D287D8239007E7A20 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C09B339F287D8239007E7A20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C09B33A5287D87CC007E7A20 /* UniversalDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UniversalDiffableDataSource.swift; sourceTree = "<group>"; };
+		C09B33A7287D9587007E7A20 /* SimpleHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleHeaderView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 				C09B3393287D8238007E7A20 /* SceneDelegate.swift */,
 				C09B3395287D8238007E7A20 /* ViewController.swift */,
 				C09B33A5287D87CC007E7A20 /* UniversalDiffableDataSource.swift */,
+				C09B33A7287D9587007E7A20 /* SimpleHeaderView.swift */,
 				C09B339A287D8239007E7A20 /* Assets.xcassets */,
 				C09B339C287D8239007E7A20 /* LaunchScreen.storyboard */,
 				C09B339F287D8239007E7A20 /* Info.plist */,
@@ -137,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C09B33A8287D9587007E7A20 /* SimpleHeaderView.swift in Sources */,
 				C09B33A6287D87CC007E7A20 /* UniversalDiffableDataSource.swift in Sources */,
 				C09B3396287D8238007E7A20 /* ViewController.swift in Sources */,
 				C09B3392287D8238007E7A20 /* AppDelegate.swift in Sources */,

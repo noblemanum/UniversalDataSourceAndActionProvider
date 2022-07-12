@@ -23,6 +23,7 @@ final class ViewController: UIViewController {
         super.viewDidLoad()
         
         setupCollectionView()
+        setupDataSource()
     }
     
     private func setupCollectionView() {
@@ -32,9 +33,19 @@ final class ViewController: UIViewController {
         collectionView.backgroundColor = .white
         collectionView.collectionViewLayout = createLayout()
     }
+    
+    private func setupDataSource() {
+        dataSource.registerSupplementaryView(
+            viewType: SimpleHeaderView.self,
+            kind: UICollectionView.elementKindSectionHeader,
+            configuration: { view, indexPath, _ in
+                view.configure(with: "Section \(indexPath.section)")
+            }
+        )
+    }
 
     private func createLayout() -> UICollectionViewLayout {
-        let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
+        let layout = UICollectionViewCompositionalLayout { _, _ -> NSCollectionLayoutSection? in
 
             // Item
             let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
