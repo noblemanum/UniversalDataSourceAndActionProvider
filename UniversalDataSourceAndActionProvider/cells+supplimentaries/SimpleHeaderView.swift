@@ -12,7 +12,8 @@ final class SimpleHeaderView: UICollectionReusableView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.boldSystemFont(ofSize: 18)
+        label.textColor = .red
         return label
     }()
     
@@ -32,6 +33,7 @@ final class SimpleHeaderView: UICollectionReusableView {
     
     private func setupView() {
         addSubview(titleLabel)
+        backgroundColor = .systemGroupedBackground
         
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
