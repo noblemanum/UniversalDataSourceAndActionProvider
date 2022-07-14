@@ -56,18 +56,17 @@ final class TileCell: SeparableCollectionViewCell, ConfigurableView {
             subtitle.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 4),
             subtitle.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: Constants.padding),
             subtitle.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Constants.padding),
-            subtitle.bottomAnchor.constraint(lessThanOrEqualTo: contentView.bottomAnchor, constant: -Constants.padding),
+            subtitle.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.padding),
             
             imageView.topAnchor.constraint(equalTo: title.topAnchor),
             imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Constants.padding),
-            imageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Constants.padding),
-            imageView.heightAnchor.constraint(equalToConstant: 60),
+            imageView.bottomAnchor.constraint(equalTo: subtitle.bottomAnchor),
             imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor)
         ])
         
         title.numberOfLines = 1
         
-        subtitle.numberOfLines = 2
+        subtitle.numberOfLines = 1
         subtitle.font = UIFont.systemFont(ofSize: 12)
         subtitle.textColor = .gray
         

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  MainViewController.swift
 //  UniversalDataSourceAndActionProvider
 //
 //  Created by Сницар Д.А. on 12.07.2022.
@@ -11,19 +11,18 @@ private struct Constants {
     static let minItemsNumberBeforeListEnd: Int = 3
 }
 
-final class ViewController: UIViewController {
+final class MainViewController: UIViewController {
 
     private let collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: UICollectionViewLayout()
     )
     
+    private let actionProvider = ActionProvider<AnyHashable>()
+    
     private let service = ItemsService()
     
-    private(set) lazy var dataSource = UniversalDiffableDataSource<AnyHashable>(
-        collectionView: collectionView,
-        itemRepresentation: { $0.base }
-    )
+    private(set) lazy var dataSource = UniversalDiffableDataSource<AnyHashable>(collectionView: collectionView)
     
     private var items = [Item]()
     private var viewModels = [AnyHashable]()
@@ -37,6 +36,7 @@ final class ViewController: UIViewController {
         
         setupCollectionView()
         setupDataSource()
+        setupActionProvider()
         
         loadData()
     }
@@ -69,6 +69,8 @@ final class ViewController: UIViewController {
         collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         collectionView.backgroundColor = .white
         collectionView.collectionViewLayout = createLayout()
+        
+        collectionView.delegate = self
     }
     
     private func setupDataSource() {
@@ -83,6 +85,33 @@ final class ViewController: UIViewController {
         dataSource.registerCellType(TileCell.self)
         dataSource.registerCellType(SimpleCell.self)
         dataSource.registerCellType(AlertCell.self)
+    }
+    
+    private func setupActionProvider() {
+        actionProvider.registerAction(itemType: TileItem.self) { [weak self] item in
+            let controller = TileViewController()
+            controller.setupImage(item.imageName)
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }
+        
+        actionProvider.registerAction(itemType: SimpleItem.self) { [weak self] item in
+            let controller = SimpleViewController()
+            controller.setupTitle(item.title)
+            controller.modalPresentationStyle = .formSheet
+            self?.present(controller, animated: true)
+        }
+        
+        actionProvider.registerAction(itemType: AlertItem.self) { [weak self] item in
+            let actionSheetController = UIAlertController(
+                title: item.title,
+                message: nil,
+                preferredStyle: .alert
+            )
+            let cancelAction = UIAlertAction(title: "Ok", style: .cancel)
+            actionSheetController.addAction(cancelAction)
+            
+            self?.present(actionSheetController, animated: true)
+        }
     }
 
     private func createLayout() -> UICollectionViewLayout {
@@ -129,6 +158,21 @@ final class ViewController: UIViewController {
             DispatchQueue.main.async {
                 self.dataSource.reload([Section(id: .zero, items: self.viewModels)])
             }
+        }
+    }
+}
+
+
+extension MainViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let itemContainer = items[indexPath.item]
+    
+        if let tileItem = itemContainer.tileItem {
+            actionProvider.performAction(for: tileItem)
+        } else if let simpleItem = itemContainer.simpleItem {
+            actionProvider.performAction(for: simpleItem)
+        } else if let alertItem = itemContainer.alertItem {
+            actionProvider.performAction(for: alertItem)
         }
     }
 }

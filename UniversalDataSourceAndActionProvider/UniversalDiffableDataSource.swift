@@ -7,7 +7,7 @@
 
 import UIKit
 
-struct RegistrationKey: Hashable {
+private struct RegistrationKey: Hashable {
     let id: ObjectIdentifier
     let category: UICollectionView.ElementCategory
     let elementKind: String?
@@ -41,7 +41,6 @@ struct Section<Item: Hashable>: Hashable, Identifiable {
     }
 }
 
-/// Датасорс списка баз знаний
 final class UniversalDiffableDataSource<Item: Hashable>: UICollectionViewDiffableDataSource<Section<Item>, Item> {
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section<Item>, Item>
     
@@ -57,17 +56,12 @@ final class UniversalDiffableDataSource<Item: Hashable>: UICollectionViewDiffabl
     private weak var collectionView: UICollectionView?
     private var registrations: MutableRef<[RegistrationKey: ViewRegistration]>
     
-    convenience init(collectionView: UICollectionView) {
-        self.init(collectionView: collectionView, itemRepresentation: { $0 })
-    }
-    
-    init<T>(collectionView: UICollectionView, itemRepresentation: @escaping (Item) -> T) {
+    init(collectionView: UICollectionView) {
         let registrations = MutableRef<[RegistrationKey: ViewRegistration]>([:])
-        let representation: (Item) -> Any = { itemRepresentation($0) }
         self.registrations = registrations
         
         super.init(collectionView: collectionView) { collectionView, indexPath, item in
-            let itemType = type(of: representation(item))
+            let itemType = type(of: (item as AnyHashable).base)
             let key = RegistrationKey(id: ObjectIdentifier(itemType), category: .cell, elementKind: nil)
             guard let registration = registrations.value[key] else {
                 assertionFailure("No registration for item of type: \(itemType)")
