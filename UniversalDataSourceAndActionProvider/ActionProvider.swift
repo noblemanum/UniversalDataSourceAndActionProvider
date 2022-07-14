@@ -22,26 +22,18 @@ final class ActionRegistration {
 
 final class ActionProvider<Item: Hashable> {
     
-    private final class MutableRef<Value> {
-        var value: Value
-        
-        init(_ value: Value) {
-            self.value = value
-        }
-    }
-    
-    private var registrations = MutableRef<[ObjectIdentifier: ActionRegistration]>([:])
+    private var registrations = [ObjectIdentifier: ActionRegistration]()
     
     func registerAction<Item>(itemType: Item.Type, action: @escaping (Item) -> Void) {
         let key = ObjectIdentifier(itemType)
         let registration = ActionRegistration(action: action)
-        registrations.value[key] = registration
+        registrations[key] = registration
     }
     
     func performAction(for item: Item) {
         let itemType = type(of: (item as AnyHashable).base)
         let key = ObjectIdentifier(itemType)
-        guard let registration = registrations.value[key] else {
+        guard let registration = registrations[key] else {
             assertionFailure("No register action for item of type: \(itemType)")
             return
         }
