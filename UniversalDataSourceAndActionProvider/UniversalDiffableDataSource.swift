@@ -56,12 +56,13 @@ final class UniversalDiffableDataSource<Item: Hashable>: UICollectionViewDiffabl
     private weak var collectionView: UICollectionView?
     private var registrations: MutableRef<[RegistrationKey: ViewRegistration]>
     
-    init(collectionView: UICollectionView) {
+    init<T>(collectionView: UICollectionView, itemRepresentation: @escaping (Item) -> T) {
+        let itemRepresentation: (Item) -> Any = { itemRepresentation($0) }
         let registrations = MutableRef<[RegistrationKey: ViewRegistration]>([:])
         self.registrations = registrations
         
         super.init(collectionView: collectionView) { collectionView, indexPath, item in
-            let itemType = type(of: (item as AnyHashable).base)
+            let itemType = type(of: itemRepresentation(item))
             let key = RegistrationKey(id: ObjectIdentifier(itemType), category: .cell, elementKind: nil)
             guard let registration = registrations.value[key] else {
                 assertionFailure("No registration for item of type: \(itemType)")

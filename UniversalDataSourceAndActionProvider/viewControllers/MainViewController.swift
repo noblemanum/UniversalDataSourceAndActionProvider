@@ -22,7 +22,10 @@ final class MainViewController: UIViewController {
     
     private let service = ItemsService()
     
-    private(set) lazy var dataSource = UniversalDiffableDataSource<AnyHashable>(collectionView: collectionView)
+    private(set) lazy var dataSource = UniversalDiffableDataSource<AnyHashable>(
+        collectionView: collectionView,
+        itemRepresentation: { $0.base }
+    )
     
     private var items = [Item]()
     private var viewModels = [AnyHashable]()
@@ -74,6 +77,16 @@ final class MainViewController: UIViewController {
     }
     
     private func setupDataSource() {
+        dataSource.registerCell(
+            itemType: TileCellViewModel.self,
+            cellType: TileCell.self,
+            configuration: { cell, indexPath, item in
+                cell.configure(with: item)
+            })
+        
+        dataSource.registerCellType(SimpleCell.self)
+        dataSource.registerCellType(AlertCell.self)
+        
         dataSource.registerSupplementaryView(
             viewType: SimpleHeaderView.self,
             kind: UICollectionView.elementKindSectionHeader,
@@ -81,10 +94,6 @@ final class MainViewController: UIViewController {
                 view.configure(with: "Section \(indexPath.section + 1)")
             }
         )
-        
-        dataSource.registerCellType(TileCell.self)
-        dataSource.registerCellType(SimpleCell.self)
-        dataSource.registerCellType(AlertCell.self)
     }
     
     private func setupActionProvider() {
